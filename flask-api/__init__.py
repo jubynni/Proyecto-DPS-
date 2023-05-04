@@ -21,6 +21,9 @@ def create_app(test_config=None):
     from . import home
     app.register_blueprint(home.bp)
 
+    from . import doctores
+    app.register_blueprint(doctores.bp)   
+
     #Se agrega endpoint del home ya que el bp no tiene un url_prefix
     app.add_url_rule('/', endpoint='index')
     

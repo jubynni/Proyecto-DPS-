@@ -1,0 +1,68 @@
+from flask import (
+    Blueprint, jsonify, abort, request
+)
+from .db import *
+from .auth import login_required
+
+bp = Blueprint('doctores', __name__, url_prefix='/doctores')
+
+
+@bp.route('/')
+@login_required
+def lista_doctores():
+    try:
+        doctores = _obtener_doctor()
+        return jsonify(doctores), 200
+    except Exception as e:
+        print(e, flush=True)
+        return abort(500)
+
+
+@bp.route('/<int:id>')
+@login_required
+def obtener_doctor(id):
+    try:
+        doctores = _obtener_doctor(id)
+        return jsonify(doctores), 200
+    except Exception as e:
+        print(e, flush=True)
+        return abort(500)
+
+
+@bp.route('/nuevo', methods=('POST',))
+@login_required
+def nuevo_doctor():
+    try:
+        data = request.json
+        doc = (data.get('nombre_completo'), data.get('fecha_nac'), 
+            data.get('domicilio'), data.get('correo'), data.get('telefono'), data.get('especialidad'),
+            data.get('horario'), data.get('contrasenia'))
+
+        if not all(doc):
+            return jsonify('Faltan campos requeridos'), 400
+        
+        doctor = _crear_doctor(doc)
+        if doctor:
+           return jsonify(_obtener_doctor(doctor)), 200
+        return abort(400)
+    except Exception as e:
+        return abort(400)
+
+
+# Metodos de transaccionalidad con BD
+def _obtener_doctor(id = None):
+    if id:
+        doctor = sql("""select 
+                nombre_completo, fecha_nac, domicilio, correo, telefono, especialidad, horario, contraseña 
+            from doctores where id_doctor = %s""", (id,), unico=True)
+        return doctor
+    lista_doctores = sql('select nombre_completo, correo from doctores;')
+    return lista_doctores
+
+
+def _crear_doctor(doc):
+    doctor = insertar_o_actualizar("""insert into 
+        doctores(nombre_completo, fecha_nac, domicilio, correo, telefono, especialidad, horario, contraseña)
+        values (%s, %s, %s, %s, %s, %s, %s, %s)
+    """, doc)
+    return doctor

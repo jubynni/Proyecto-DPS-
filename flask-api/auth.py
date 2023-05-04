@@ -1,7 +1,7 @@
 import functools
 
 from flask import (
-    Blueprint, jsonify, request, session, current_app as app
+    Blueprint, jsonify, request, session, current_app as app, abort
 )
 from .db import *
 from cryptography.fernet import Fernet
@@ -53,6 +53,6 @@ def login_required(view):
     @functools.wraps(view)
     def wrapped_view(**kwargs):
         if not session.get('id'):
-            return jsonify(False),401
+            return abort(401)
         return view(**kwargs)
     return wrapped_view

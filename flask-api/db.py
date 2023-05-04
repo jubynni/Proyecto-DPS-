@@ -23,7 +23,7 @@ def bd():
     return db
 
 
-def sql(consulta, filtros, unico=False):
+def sql(consulta, filtros=None, unico=False):
     try:
         db = bd()
         cursor = db.cursor(dictionary=True)
@@ -42,9 +42,10 @@ def insertar_o_actualizar(consulta, valores):
         db = bd()
         cursor = db.cursor()
         cursor.execute(consulta, valores)
+        id = cursor.lastrowid
         cursor.close()
         db.close()
-        return True
+        return id
     except Exception as e:
         print(f"Error al insertar {consulta} con valores {valores}: {e}", flush=True)
-        return False
+        return None
