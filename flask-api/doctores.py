@@ -49,14 +49,33 @@ def nuevo_doctor():
         return abort(400)
 
 
+@bp.route('/modificar/<int:id>', methods=('POST',))
+@login_required
+def modificar_doctor(id):
+    try:
+        data = request.json
+        doc = (data.get('nombre_completo'), data.get('fecha_nac'), 
+            data.get('domicilio'), data.get('correo'), data.get('telefono'), data.get('especialidad'),
+            data.get('horario'), data.get('contrasenia'), id)
+        if not all(doc):
+            return jsonify('Faltan campos requeridos'), 400
+        
+        _actualizar_doctor(doc)
+        return jsonify(_obtener_doctor(id)), 200
+    except Exception as e:
+        return abort(400)
+
+
 # Metodos de transaccionalidad con BD
 def _obtener_doctor(id = None):
     if id:
-        doctor = sql("""select 
+        doctor = sql("""select id_doctor, 
                 nombre_completo, fecha_nac, domicilio, correo, telefono, especialidad, horario, contraseña 
             from doctores where id_doctor = %s""", (id,), unico=True)
         return doctor
-    lista_doctores = sql('select nombre_completo, correo from doctores;')
+    lista_doctores = sql('''select id_doctor,
+                nombre_completo, fecha_nac, domicilio, correo, telefono, especialidad, horario, contraseña 
+            from doctores;''')
     return lista_doctores
 
 
@@ -64,5 +83,13 @@ def _crear_doctor(doc):
     doctor = insertar_o_actualizar("""insert into 
         doctores(nombre_completo, fecha_nac, domicilio, correo, telefono, especialidad, horario, contraseña)
         values (%s, %s, %s, %s, %s, %s, %s, %s)
+    """, doc)
+    return doctor
+
+
+def _actualizar_doctor(doc):
+    doctor = insertar_o_actualizar("""update
+        doctores set nombre_completo = %s, fecha_nac = %s, domicilio = %s, correo = %s ,
+        telefono = %s, especialidad = %s, horario = %s, contraseña = %s where id_doctor = %s;
     """, doc)
     return doctor
