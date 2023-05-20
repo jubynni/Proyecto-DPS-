@@ -5,7 +5,7 @@ from mysql.connector import Error
 #Diccionarios para conexion a alepo y a base de datos local
 dental_bd = {
     'user': 'root',
-    'password':'112233445566',
+    'password':'AevPwd$',
     'host':'localhost',
     'port':3306,
     'database':'dental_bd',

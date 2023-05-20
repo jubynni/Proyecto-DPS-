@@ -43,7 +43,7 @@ def encrypt_pwd(password):
 
 def decrypt_pwd(password):
     fernet = Fernet(app.config['PWD_KEY'])
-    return fernet.decrypt(password).decode()
+    return fernet.decrypt(password.encode()).decode()
 
 
 def login_required(view):
