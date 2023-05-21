@@ -8,7 +8,7 @@ bp = Blueprint('pacientes', __name__, url_prefix='/pacientes')
 
 
 @bp.route('/')
-@login_required
+# @login_required
 def lista_pacientes():
     try:
         pacientes = _obtener_paciente()
@@ -30,7 +30,7 @@ def obtener_paciente(id):
 
 
 @bp.route('/nuevo', methods=('POST',))
-@login_required
+# @login_required
 def nuevo_paciente():
     try:
         data = request.json
@@ -80,7 +80,7 @@ def _obtener_paciente(id = None):
 def _crear_paciente(doc):
     paciente = insertar_o_actualizar("""insert into 
         pacientes(nombre_completo, fecha_nac, domicilio, correo, telefono, contraseña)
-        values (%s, %s, %s, %s, %s, %s, %s, %s)
+        values (%s, %s, %s, %s, %s, %s)
     """, doc)
     return paciente
 
