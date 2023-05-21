@@ -19,6 +19,7 @@ def login_admin():
         correo = data.get('correo')
         consulta = """select id_admin, contraseña from admin where correo = %s """
         usuario = sql(consulta, (correo,), unico=True)
+        
         if usuario and decrypt_pwd(usuario.get('contraseña')) == data.get('password'):
             session.clear()
             session['id'] = usuario.get('id_admin')

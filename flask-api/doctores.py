@@ -8,7 +8,7 @@ bp = Blueprint('doctores', __name__, url_prefix='/doctores')
 
 
 @bp.route('/')
-@login_required
+# @login_required
 def lista_doctores():
     try:
         doctores = _obtener_doctor()

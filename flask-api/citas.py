@@ -8,7 +8,7 @@ bp = Blueprint('citas', __name__, url_prefix='/citas')
 
 
 @bp.route('/')
-@login_required
+# @login_required
 def lista_citas():
     try:
         citas = _obtener_cita()
@@ -30,7 +30,7 @@ def obtener_cita(id):
 
 
 @bp.route('/nuevo', methods=('POST',))
-@login_required
+# @login_required
 def nuevo_cita():
     try:
         data = request.json
@@ -41,7 +41,8 @@ def nuevo_cita():
         
         cita = _crear_cita(doc)
         if cita:
-           return jsonify(_obtener_cita(cita)), 200
+            cita = _obtener_cita(cita)
+            return jsonify(cita), 200
         return abort(400)
     except Exception as e:
         return abort(400)
@@ -63,21 +64,37 @@ def modificar_cita(id):
 
 # Metodos de transaccionalidad con BD
 def _obtener_cita(id = None):
+    from datetime import timedelta
+    
     if id:
         cita = sql("""select 
-              id_cita,  id_paciente, id_doctor, fecha_cita, hora_cita 
-            from citas where id_cita = %s""", (id,), unico=True)
-        return cita
-    lista_citas = sql('''select 
-              id_cita,  id_paciente, id_doctor, fecha_cita, hora_cita
-            from citas;''')
+              id_cita, d.nombre_completo doctor, p.nombre_completo paciente, fecha_cita, hora_cita 
+            from citas c 
+            inner join doctores d on d.id_doctor = c.id_doctor
+            inner join pacientes p on p.id_paciente = c.id_paciente
+            where id_cita = %s""", (id,), unico=True)
+        for c in cita:
+            if isinstance(cita[c], timedelta):
+                cita[c] = str(cita[c])
+        return cita            
+    lista_citas = sql('''select
+            id_cita, d.nombre_completo doctor, p.nombre_completo paciente, fecha_cita, hora_cita 
+            from citas c 
+            inner join doctores d on d.id_doctor = c.id_doctor
+            inner join pacientes p on p.id_paciente = c.id_paciente
+            ''')
+    
+    for c in lista_citas:
+        for v in c:
+            if isinstance(c[v], timedelta):
+                c[v] = str(c[v])
     return lista_citas
 
 
 def _crear_cita(doc):
     cita = insertar_o_actualizar("""insert into 
         citas(id_paciente, id_doctor, fecha_cita, hora_cita)
-        values (%s, %s, %s, %s, %s, %s, %s, %s)
+        values (%s, %s, %s, %s)
     """, doc)
     return cita
 
