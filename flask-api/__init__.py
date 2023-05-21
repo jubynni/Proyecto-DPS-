@@ -1,5 +1,7 @@
 from posixpath import dirname, join, realpath
 from flask import Flask
+from flask_cors import CORS, cross_origin
+
 
 def create_app(test_config=None):
     #Creacion y configuracion de app
@@ -7,6 +9,8 @@ def create_app(test_config=None):
     app.config.from_mapping(
         SECRET_KEY='caefb93e545fcb0a',
     )
+    CORS(app, support_credentials=True, origins='http://localhost:19006')
+    
     
     #Acepta archivos de hasta 5MB, acepta solo archivos con las extensiones detalladas y se definen
     #los directorios donde se almacenan los archivos subidos.
