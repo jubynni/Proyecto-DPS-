@@ -12,7 +12,7 @@ const Home = () => {
 
         <View style = {styles.menu}>
         <Text style = {styles.title}>Pacientes</Text> 
-          <Pressable onPress={() => navigation.navigate('Doctores')}  style={styles.button}>
+          <Pressable onPress={() => navigation.navigate('Crear Paciente')}  style={styles.button}>
             <Text style={styles.textButton}>Crear</Text>
           </Pressable>
           <Pressable onPress={() => navigation.navigate('Pacientes')}  style={styles.button}>
@@ -22,7 +22,7 @@ const Home = () => {
 
         <View style = {styles.menu}>
         <Text style = {styles.title}>Doctores</Text> 
-          <Pressable onPress={() => navigation.navigate('Doctores')}  style={styles.button}>
+          <Pressable onPress={() => navigation.navigate('Crear Doctor')}  style={styles.button}>
             <Text style={styles.textButton}>Crear</Text>
           </Pressable>
           <Pressable onPress={() => navigation.navigate('Doctores')}  style={styles.button}>

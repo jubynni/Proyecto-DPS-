@@ -30,7 +30,7 @@ def obtener_doctor(id):
 
 
 @bp.route('/nuevo', methods=('POST',))
-@login_required
+# @login_required
 def nuevo_doctor():
     try:
         data = request.json

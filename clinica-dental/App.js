@@ -3,6 +3,8 @@ import Home from './screens/Home';
 import Doctores from './screens/Doctores'
 import Pacientes from './screens/Pacientes'
 import Citas from './screens/Citas'
+import CrearPaciente from './screens/CrearPaciente'
+import CrearDoctor from './screens/CrearDoctor'
 
 import  { NavigationContainer } from '@react-navigation/native';
 import  { createStackNavigator } from '@react-navigation/stack';
@@ -17,6 +19,8 @@ export default function App() {
         <Stack.Screen name ="Doctores" component={Doctores}/>
         <Stack.Screen name ="Pacientes" component={Pacientes}/>
         <Stack.Screen name ="Citas" component={Citas}/>
+        <Stack.Screen name ="Crear Paciente" component={CrearPaciente}/>
+        <Stack.Screen name ="Crear Doctor" component={CrearDoctor}/>
       </Stack.Navigator>
     </NavigationContainer>
   )
