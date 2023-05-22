@@ -7,7 +7,8 @@ Enlaces de Interés
 
 [Mockups Fase I] - https://drive.google.com/file/d/1yQ_uFbpJVOHzKtq2XvcObpgAcce_SbVc/view?usp=sharing
 
-[Pruebas funcionalidad fase II]: https://www.youtube.com/watch?v=qRu0sEaTjOU 
+[Mockups Fase I] - https://www.youtube.com/watch?v=qRu0sEaTjOU
+
 
 Desarrolladores:
 
