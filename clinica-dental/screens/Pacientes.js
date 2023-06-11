@@ -5,6 +5,7 @@ import { useNavigation } from '@react-navigation/native'
 
 const Pacientes = () => {
     const [pacientes, setPacientes] = useState([]);
+    const navigation = useNavigation();
 
 
     const eliminar = async (id) => {
@@ -62,7 +63,7 @@ const Pacientes = () => {
         <Text>Teléfono: {item.telefono}</Text>
 
         <View style = {styles.menu}>
-          <Pressable onPress={() => confirmarEliminar(item.id_paciente)}  style={styles.button}>
+          <Pressable onPress={() => navigation.navigate('Modificar Paciente', {item})}  style={styles.button}>
             <Text style={styles.textButton}>Modificar</Text>
           </Pressable>
           <Pressable onPress={() => confirmarEliminar(item.id_paciente)}  style={styles.button_eliminar}>

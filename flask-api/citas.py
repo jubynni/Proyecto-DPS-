@@ -58,7 +58,7 @@ def nuevo_cita():
 
 
 @bp.route('/modificar/<int:id>', methods=('POST',))
-@login_required
+# @login_required
 def modificar_cita(id):
     try:
         data = request.json
@@ -77,7 +77,7 @@ def _obtener_cita(id = None):
     
     if id:
         cita = sql("""select 
-              id_cita, d.nombre_completo doctor, p.nombre_completo paciente, fecha_cita, hora_cita 
+              id_cita, d.id_doctor,d.nombre_completo doctor,p.id_paciente, p.nombre_completo paciente, fecha_cita, hora_cita 
             from citas c 
             inner join doctores d on d.id_doctor = c.id_doctor
             inner join pacientes p on p.id_paciente = c.id_paciente
@@ -87,15 +87,12 @@ def _obtener_cita(id = None):
                 cita[c] = str(cita[c])
         return cita            
     lista_citas = sql('''select
-            id_cita, d.nombre_completo doctor, p.nombre_completo paciente, fecha_cita, hora_cita 
+            id_cita,d.id_doctor, p.id_paciente, d.nombre_completo doctor, p.nombre_completo paciente, fecha_cita, hora_cita 
             from citas c 
             inner join doctores d on d.id_doctor = c.id_doctor
             inner join pacientes p on p.id_paciente = c.id_paciente
-<<<<<<< HEAD
             where 
                 c.deshabilitado = 0
-=======
->>>>>>> babea07acdf97c4c6b38e7288929abe31cd88fd2
             ''')
     
     for c in lista_citas:

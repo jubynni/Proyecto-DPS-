@@ -6,6 +6,7 @@ import { useNavigation } from '@react-navigation/native'
 const Citas = () => {
     const [citas, setCitas] = useState([]);
 
+    const navigation = useNavigation();
 
     const eliminar = async (id) => {
       try {
@@ -62,10 +63,10 @@ const Citas = () => {
         <Text>Hora: {item.hora_cita}</Text>  
 
         <View style = {styles.menu}>
-          <Pressable onPress={() => confirmarEliminar(item.id_cita)}  style={styles.button}>
+          <Pressable onPress={() => navigation.navigate('Modificar Cita', {item})} style={styles.button}>
             <Text style={styles.textButton}>Modificar</Text>
           </Pressable>
-          <Pressable onPress={() => confirmarEliminar(item.id_cita)}  style={styles.button_eliminar}>
+          <Pressable  onPress={() => confirmarEliminar(item.id_cita)}  style={styles.button_eliminar}>
             <Text style={styles.textButton}>Eliminar</Text>
           </Pressable>
         </View>

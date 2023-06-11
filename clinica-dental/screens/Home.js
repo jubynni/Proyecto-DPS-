@@ -4,7 +4,7 @@ import image from "../assets/logo.jpeg";
 import { useNavigation } from '@react-navigation/native'
 
 const Home = () => {
-    const navigation = useNavigation();
+  const navigation = useNavigation();
 
     return(
         <SafeAreaView style={styles.container}>

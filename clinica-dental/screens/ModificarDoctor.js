@@ -2,51 +2,48 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TextInput, Image,Button, SafeAreaView, FlatList, Alert, Pressable } from 'react-native';
 // import DateTimePicker from '@react-native-community/datetimepicker';
 import image from "../assets/logo.jpeg";
+import { useNavigation } from '@react-navigation/native'
 
 
 
-const Doctor = () => {
-    const [nombre, setNombre] = useState('');
-    const [domicilio, setDomicilio] = useState('');
-    const [correo, setCorreo] = useState('');
-    const [fecha_nac, setFechaNac] = useState('');
-    const [password, setPassword] = useState('');
-    const [telefono, setTelefono] = useState('');
-    const [especialidad, setEspecialidad] = useState('');
-    const [horario, setHorario] = useState('');
+const Doctor = (routeOpt) => {
+    const item = routeOpt.route.params.item
+    const [nombre, setNombre] = useState(item.nombre_completo);
+    const [domicilio, setDomicilio] = useState(item.domicilio);
+    const [correo, setCorreo] = useState(item.correo);
+    const [fecha_nac, setFechaNac] = useState(item.fecha_nac);
+    const [telefono, setTelefono] = useState(item.telefono);
+    const [especialidad, setEspecialidad] = useState(item.especialidad);
+    const [horario, setHorario] = useState(item.horario);
+    const navigation = useNavigation();
 
-    const agregarDoctor = () => {
-        const nuevoDoctor = {
-          nombre_completo: nombre,
-          domicilio: domicilio,
-          telefono: telefono,
-          fecha_nac: fecha_nac,
-          correo: correo,
-          contrasenia: password,
-          horario: horario,
-          especialidad: especialidad,
+    const modificarDoctor = async (id) => {
+        const modificarDoctor = {
+            nombre_completo: nombre,
+            domicilio: domicilio,
+            telefono: telefono,
+            fecha_nac: fecha_nac,
+            correo: correo,
+            horario: horario,
+            especialidad: especialidad,
         };
-        fetch('http://192.168.1.29:5000/doctores/nuevo', {
+        const url =`http://192.168.1.29:5000/doctores/modificar/${id.toString()}`
+        console.log(url) 
+        fetch(url,{
           method: 'POST',
           headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify(nuevoDoctor)
+          body: JSON.stringify(modificarDoctor)
         })
           .then(response => {
             if (response.ok) {
-              setNombre('');
-              setDomicilio('');
-              setFechaNac('');
-              setCorreo('');
-              setPassword('');
-              setTelefono('');
-              setHorario('');
-              setEspecialidad('');
-              alert('Doctor agregado con éxito');
+            
+              alert('Doctor modificada con éxito');
+              navigation.navigate('Doctores')
             } else {
-              throw new Error('Error al agregar Doctor');
+              throw new Error('Error al modificar doctor ' + response.status);
             }
           })
           .catch(error => console.error(error));
@@ -60,21 +57,12 @@ const Doctor = () => {
           </Image>
 
           <View style={styles.formulario}>   
-        
-                <TextInput
+          <TextInput
                 style={styles.input}
                 placeholder="Nombre"
                 value={nombre}
                 onChangeText={text => setNombre(text)}
                 />
-
-                {/* <TextInput
-                style={styles.input}
-                placeholder="Fecha Nacimiento"
-                value={fecha_nac}
-                onChangeText={text => setFechaNac(text)}
-                /> */}
-                
 
                 <TextInput
                 style={styles.input}
@@ -105,20 +93,6 @@ const Doctor = () => {
                 onChangeText={text => setFechaNac(text)}
                 />
 
-                {/* <DateTimePicker
-                    testID="dateTimePicker"
-                    value={fecha_nac}
-                    mode= 'date'
-                    is24Hour={true}
-                    onChange={onChange}
-                /> */}
-
-                <TextInput
-                style={styles.input}
-                placeholder="Contraseña"
-                value={password}
-                onChangeText={text => setPassword(text)}
-                />
                 <TextInput
                 style={styles.input}
                 placeholder="Horario"
@@ -131,8 +105,9 @@ const Doctor = () => {
                 value={especialidad}
                 onChangeText={text => setEspecialidad(text)}
                 />
-                <Pressable onPress={agregarDoctor}  style={styles.button}>
-                    <Text style={styles.textButton}>Agregar</Text>
+
+                <Pressable onPress={() => modificarDoctor(item.id_doctor)}  style={styles.button}>
+                    <Text style={styles.textButton}>Modificar</Text>
                 </Pressable>
 
             </View>

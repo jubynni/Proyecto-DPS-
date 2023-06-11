@@ -19,7 +19,7 @@ def lista_doctores():
 
 
 @bp.route('/<int:id>')
-@login_required
+# @login_required
 def obtener_doctor(id):
     try:
         doctores = _obtener_doctor(id)
@@ -60,13 +60,13 @@ def nuevo_doctor():
 
 
 @bp.route('/modificar/<int:id>', methods=('POST',))
-@login_required
+# @login_required
 def modificar_doctor(id):
     try:
         data = request.json
         doc = (data.get('nombre_completo'), data.get('fecha_nac'), 
             data.get('domicilio'), data.get('correo'), data.get('telefono'), data.get('especialidad'),
-            data.get('horario'), data.get('contrasenia'), id)
+            data.get('horario'), id)
         if not all(doc):
             return jsonify('Faltan campos requeridos'), 400
         
@@ -100,7 +100,7 @@ def _crear_doctor(doc):
 def _actualizar_doctor(doc):
     doctor = insertar_o_actualizar("""update
         doctores set nombre_completo = %s, fecha_nac = %s, domicilio = %s, correo = %s ,
-        telefono = %s, especialidad = %s, horario = %s, contraseña = %s where id_doctor = %s;
+        telefono = %s, especialidad = %s, horario = %s where id_doctor = %s;
     """, doc)
     return doctor
 
