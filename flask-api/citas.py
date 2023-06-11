@@ -91,8 +91,11 @@ def _obtener_cita(id = None):
             from citas c 
             inner join doctores d on d.id_doctor = c.id_doctor
             inner join pacientes p on p.id_paciente = c.id_paciente
+<<<<<<< HEAD
             where 
                 c.deshabilitado = 0
+=======
+>>>>>>> babea07acdf97c4c6b38e7288929abe31cd88fd2
             ''')
     
     for c in lista_citas:

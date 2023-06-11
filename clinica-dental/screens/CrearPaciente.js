@@ -27,7 +27,11 @@ const Pacientes = () => {
           correo: correo,
           contrasenia: password,
         };
+<<<<<<< HEAD
         fetch('http://192.168.1.29:5000/pacientes/nuevo', {
+=======
+        fetch('http://192.168.1.14:5000/pacientes/nuevo', {
+>>>>>>> babea07acdf97c4c6b38e7288929abe31cd88fd2
           method: 'POST',
           headers: {
             Accept: 'application/json',
