@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, TextInput, Image,Button, SafeAreaView, FlatList, Alert } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Image,Button, SafeAreaView, FlatList, Alert,Pressable } from 'react-native';
 import image from "../assets/logo.jpeg";
 import { useNavigation } from '@react-navigation/native'
 
@@ -61,8 +61,16 @@ const Doctores = () => {
         <Text>Fecha Nacimiento: {item.fecha_nac}</Text>
         <Text>Domicilio: {item.domicilio}</Text>  
         <Text>Teléfono: {item.telefono}</Text>
-        <Button title="Eliminar" onPress={() => confirmarEliminar(item.id_doctor)} />
-        {/* <Button title="Eliminar" onPress={() => confirmarEliminarPaciente(item.id)} /> */}
+
+        <View style = {styles.menu}>
+          <Pressable onPress={() => confirmarEliminar(item.id_doctor)}  style={styles.button}>
+            <Text style={styles.textButton}>Modificar</Text>
+          </Pressable>
+          <Pressable onPress={() => confirmarEliminar(item.id_doctor)}  style={styles.button_eliminar}>
+            <Text style={styles.textButton}>Eliminar</Text>
+          </Pressable>
+        </View>
+        
     </View>
     );
 
@@ -127,5 +135,48 @@ const styles = StyleSheet.create({
     },
     menu:{
       color: 'red '
-    }
+    },
+    button: {
+      alignItems: 'center',
+      justifyContent: 'center',
+      alignSelf: 'center',
+      width: 130,
+      height: 40,
+      paddingVertical: 12,
+      paddingHorizontal: 32,
+      borderRadius: 4,
+      elevation: 3,
+      margin: 5,
+      backgroundColor: '#df48ec',   
+  },
+  button_eliminar: {
+      alignItems: 'center',
+      justifyContent: 'center',
+      alignSelf: 'center',
+      width: 130,
+      height: 40,
+      paddingVertical: 12,
+      paddingHorizontal: 32,
+      borderRadius: 4,
+      elevation: 3,
+      margin: 5,
+      backgroundColor: '#D11A2A',   
+  },
+  textButton: {
+      fontSize: 14,
+      lineHeight: 0,
+      fontWeight: 'bold',
+      letterSpacing: 0.25,
+      color: 'white',
+  },
+  menu: {
+    alignSelf: 'center',
+    flex: 1,
+    width: 350,
+    marginHorizontal: 10,
+    marginTop: 10,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+  }
 });

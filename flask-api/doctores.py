@@ -81,7 +81,7 @@ def _obtener_doctor(id = None):
     if id:
         doctor = sql("""select id_doctor, 
                 nombre_completo, fecha_nac, domicilio, correo, telefono, especialidad, horario, contraseña 
-            from doctores where id_doctor = %s and deshabilitado = 0""", (id,), unico=True)
+            from doctores where id_doctor = %s """, (id,), unico=True)
         return doctor
     lista_doctores = sql('''select id_doctor,
                 nombre_completo, fecha_nac, domicilio, correo, telefono, especialidad, horario, contraseña 

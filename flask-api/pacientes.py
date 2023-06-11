@@ -78,11 +78,11 @@ def _obtener_paciente(id = None):
     if id:
         paciente = sql("""select id_paciente,
                 nombre_completo, fecha_nac, domicilio, correo, telefono, contraseña 
-            from pacientes where id_paciente = %s""", (id,), unico=True)
+            from pacientes where id_paciente = %s """, (id,), unico=True)
         return paciente
     lista_pacientes = sql('''select id_paciente,    
                 nombre_completo, fecha_nac, domicilio, correo, telefono, contraseña 
-            from pacientes;''')
+            from pacientes where deshabilitado = 0;''')
     return lista_pacientes
 
 
