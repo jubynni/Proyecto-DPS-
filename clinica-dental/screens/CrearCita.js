@@ -5,47 +5,41 @@ import image from "../assets/logo.jpeg";
 
 
 
-const Pacientes = () => {
-    const [nombre, setNombre] = useState('');
-    const [domicilio, setDomicilio] = useState('');
-    const [correo, setCorreo] = useState('');
-    const [fecha_nac, setFechaNac] = useState('');
-    const [password, setPassword] = useState('');
-    const [telefono, setTelefono] = useState('');
+const Citas = () => {
+    const [id_paciente, setIdPaciente] = useState('');
+    const [id_doctor, setIdDoctor] = useState('');
+    const [fecha, setFecha] = useState('');
+    const [hora, setHora] = useState('');
 
     const onChange = (event, selectedDate) => {
         setFechaNac(selectedDate);
         
     };
 
-    const agregarPaciente = () => {
-        const nuevoPaciente = {
-          nombre_completo: nombre,
-          domicilio: domicilio,
-          telefono: telefono,
-          fecha_nac: fecha_nac,
-          correo: correo,
-          contrasenia: password,
+    const agregarCita = () => {
+        const nuevaCita = {
+            id_paciente: id_paciente,
+            id_doctor: id_doctor,
+            fecha: fecha,
+            hora: hora
         };
-        fetch('http://192.168.1.29:5000/pacientes/nuevo', {
+        fetch('http://192.168.1.29:5000/citas/nuevo', {
           method: 'POST',
           headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify(nuevoPaciente)
+          body: JSON.stringify(nuevaCita)
         })
           .then(response => {
             if (response.ok) {
-              setNombre('');
-              setDomicilio('');
-              setFechaNac('');
-              setCorreo('');
-              setPassword('');
-              setTelefono('');
-              alert('Paciente agregado con éxito');
+              setIdDoctor('');
+              setIdPaciente('');
+              setFecha('');
+              setHora('');
+              alert('Cita agregada con éxito');
             } else {
-              throw new Error('Error al agregar paciente');
+              throw new Error('Error al agregar cita');
             }
           })
           .catch(error => console.error(error));
@@ -62,63 +56,35 @@ const Pacientes = () => {
         
                 <TextInput
                 style={styles.input}
-                placeholder="Nombre"
-                value={nombre}
-                onChangeText={text => setNombre(text)}
-                />
-
-                {/* <TextInput
-                style={styles.input}
-                placeholder="Fecha Nacimiento"
-                value={fecha_nac}
-                onChangeText={text => setFechaNac(text)}
-                /> */}
-                
-
-                <TextInput
-                style={styles.input}
-                placeholder="Domicilio"
-                value={domicilio}
-                onChangeText={text => setDomicilio(text)}
-                />
-
-                <TextInput
-                style={styles.input}
-                placeholder="Telefono"
-                value={telefono}
-                onChangeText={text => setTelefono(text)}
+                placeholder="Doctor"
+                value={id_doctor}
+                onChangeText={text => setIdDoctor(text)}
                 />
 
 
                 <TextInput
                 style={styles.input}
-                placeholder="Correo"
-                value={correo}
-                onChangeText={text => setCorreo(text)}
+                placeholder="Paciente"
+                value={id_paciente}
+                onChangeText={text => setIdPaciente(text)}
                 />
                 
                 <TextInput
                 style={styles.input}
-                placeholder="Fecha Nacimiento"
-                value={fecha_nac}
-                onChangeText={text => setFechaNac(text)}
+                placeholder="Fecha"
+                value={fecha}
+                onChangeText={text => setFecha(text)}
                 />
-
-                {/* <DateTimePicker
-                    testID="dateTimePicker"
-                    value={fecha_nac}
-                    mode= 'date'
-                    is24Hour={true}
-                    onChange={onChange}
-                /> */}
 
                 <TextInput
                 style={styles.input}
-                placeholder="Contraseña"
-                value={password}
-                onChangeText={text => setPassword(text)}
+                placeholder="Hora"
+                value={hora}
+                onChangeText={text => setHora(text)}
                 />
-                <Pressable onPress={agregarPaciente}  style={styles.button}>
+
+        
+                <Pressable onPress={agregarCita}  style={styles.button}>
                     <Text style={styles.textButton}>Agregar</Text>
                 </Pressable>
 
@@ -127,7 +93,7 @@ const Pacientes = () => {
       );
 }
 
-export default Pacientes
+export default Citas
 
 
 const styles = StyleSheet.create({

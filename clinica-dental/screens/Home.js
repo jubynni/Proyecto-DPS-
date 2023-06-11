@@ -32,7 +32,7 @@ const Home = () => {
 
         <View style = {styles.menu}>
         <Text style = {styles.title}>Citas</Text> 
-          <Pressable onPress={() => navigation.navigate('Doctores')}  style={styles.button}>
+          <Pressable onPress={() => navigation.navigate('Crear Cita')}  style={styles.button}>
             <Text style={styles.textButton}>Crear</Text>
           </Pressable>
           <Pressable onPress={() => navigation.navigate('Citas')}  style={styles.button}>
