@@ -12,7 +12,7 @@ const Pacientes = () => {
     }, []);
 
     const obtenerPacientes = () => {
-        fetch('http://192.168.1.14:5000/pacientes/')
+        fetch('http://192.168.1.19:5000/pacientes/')
         .then(response => response.json())
         .then(data => setPacientes(data))
         .catch(error => console.error(error));

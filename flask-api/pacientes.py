@@ -64,6 +64,15 @@ def modificar_paciente(id):
         return abort(400)
 
 
+@bp.route('/eliminar/<int:id>')
+# @login_required
+def eliminar(id):
+    try:
+        _eliminar_paciente((id,))
+        return jsonify(_obtener_paciente(id)), 200
+    except Exception as e:
+        return abort(400)
+
 # Metodos de transaccionalidad con BD
 def _obtener_paciente(id = None):
     if id:
@@ -90,4 +99,11 @@ def _actualizar_paciente(doc):
         pacientes set nombre_completo = %s, fecha_nac = %s, domicilio = %s, correo = %s ,
         telefono = %s, contraseña = %s where id_paciente = %s;
     """, doc)
+    return paciente
+
+
+def _eliminar_paciente(id):
+    paciente = insertar_o_actualizar("""update
+        pacientes set deshabilitado = 1 where id_paciente = %s;
+    """, id)
     return paciente

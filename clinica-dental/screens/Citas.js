@@ -12,7 +12,7 @@ const Citas = () => {
     }, []);
 
     const obtenerCitas = () => {
-        fetch('http://192.168.1.14:5000/citas/')
+        fetch('http://192.168.1.29:5000/citas/')
         .then(response => response.json())
         .then(data => setCitas(data))
         .catch(error => console.error(error));  
