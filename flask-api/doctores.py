@@ -29,6 +29,16 @@ def obtener_doctor(id):
         return abort(500)
 
 
+@bp.route('/eliminar/<int:id>')
+# @login_required
+def eliminar(id):
+    try:
+        _eliminar_doctor((id,))
+        return jsonify(_obtener_doctor(id)), 200
+    except Exception as e:
+        return abort(400)
+
+
 @bp.route('/nuevo', methods=('POST',))
 # @login_required
 def nuevo_doctor():
@@ -71,11 +81,11 @@ def _obtener_doctor(id = None):
     if id:
         doctor = sql("""select id_doctor, 
                 nombre_completo, fecha_nac, domicilio, correo, telefono, especialidad, horario, contraseña 
-            from doctores where id_doctor = %s""", (id,), unico=True)
+            from doctores where id_doctor = %s """, (id,), unico=True)
         return doctor
     lista_doctores = sql('''select id_doctor,
                 nombre_completo, fecha_nac, domicilio, correo, telefono, especialidad, horario, contraseña 
-            from doctores;''')
+            from doctores where deshabilitado = 0;''')
     return lista_doctores
 
 
@@ -92,4 +102,11 @@ def _actualizar_doctor(doc):
         doctores set nombre_completo = %s, fecha_nac = %s, domicilio = %s, correo = %s ,
         telefono = %s, especialidad = %s, horario = %s, contraseña = %s where id_doctor = %s;
     """, doc)
+    return doctor
+
+
+def _eliminar_doctor(id):
+    doctor = insertar_o_actualizar("""update
+        doctores set deshabilitado = 1 where id_doctor = %s;
+    """, id)
     return doctor

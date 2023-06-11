@@ -1,18 +1,52 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, TextInput, Image,Button, SafeAreaView, FlatList, Alert } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Image,Button, SafeAreaView, FlatList, Alert,Pressable } from 'react-native';
 import image from "../assets/logo.jpeg";
 import { useNavigation } from '@react-navigation/native'
 
 const Citas = () => {
     const [citas, setCitas] = useState([]);
 
+
+    const eliminar = async (id) => {
+      try {
+        const response = await fetch(`http://192.168.1.29:5000/citas/eliminar/${id}`, {
+          method: 'GET',        
+            headers: {
+            'Content-Type': 'application/json',          
+            },
+            });
+
+            if (response.ok) {
+              alert('Cita eliminada con éxito');
+              obtenerCitas();           
+            } else {             
+              alert('Error al eliminar');            
+            }
+            } catch (error) {
+              console.error(error);
+              // alert('Error al eliminar ');
+              alert('Error al eliminar ' + error.message);
+            }
+      };
+  
+    const confirmarEliminar = (id) => {
+      Alert.alert(
+        'Eliminar Cita',
+        '¿Estás seguro de que quieres eliminar esta cita?',
+        [
+          { text: 'Cancelar', style: 'cancel' },
+          { text: 'Eliminar', onPress: () => eliminar(id) },
+        ]
+      );
+    };
+    
     useEffect(() => {
         // obtener lista de Citas al cargar la pantalla
         obtenerCitas();
     }, []);
 
     const obtenerCitas = () => {
-        fetch('http://192.168.1.14:5000/citas/')
+        fetch('http://192.168.1.29:5000/citas/')
         .then(response => response.json())
         .then(data => setCitas(data))
         .catch(error => console.error(error));  
@@ -26,7 +60,16 @@ const Citas = () => {
         <Text style={styles.nombre}>{item.doctor}</Text>
         <Text>Fecha: {item.fecha_cita}</Text>
         <Text>Hora: {item.hora_cita}</Text>  
-        {/* <Button title="Eliminar" onPress={() => confirmarEliminarPaciente(item.id)} /> */}
+
+        <View style = {styles.menu}>
+          <Pressable onPress={() => confirmarEliminar(item.id_cita)}  style={styles.button}>
+            <Text style={styles.textButton}>Modificar</Text>
+          </Pressable>
+          <Pressable onPress={() => confirmarEliminar(item.id_cita)}  style={styles.button_eliminar}>
+            <Text style={styles.textButton}>Eliminar</Text>
+          </Pressable>
+        </View>
+
     </View>
     );
 
@@ -91,5 +134,48 @@ const styles = StyleSheet.create({
     },
     menu:{
       color: 'red '
-    }
+    },
+    button: {
+      alignItems: 'center',
+      justifyContent: 'center',
+      alignSelf: 'center',
+      width: 130,
+      height: 40,
+      paddingVertical: 12,
+      paddingHorizontal: 32,
+      borderRadius: 4,
+      elevation: 3,
+      margin: 5,
+      backgroundColor: '#df48ec',   
+  },
+  button_eliminar: {
+      alignItems: 'center',
+      justifyContent: 'center',
+      alignSelf: 'center',
+      width: 130,
+      height: 40,
+      paddingVertical: 12,
+      paddingHorizontal: 32,
+      borderRadius: 4,
+      elevation: 3,
+      margin: 5,
+      backgroundColor: '#D11A2A',   
+  },
+  textButton: {
+      fontSize: 14,
+      lineHeight: 0,
+      fontWeight: 'bold',
+      letterSpacing: 0.25,
+      color: 'white',
+  },
+  menu: {
+    alignSelf: 'center',
+    flex: 1,
+    width: 350,
+    marginHorizontal: 10,
+    marginTop: 10,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+  }
 });

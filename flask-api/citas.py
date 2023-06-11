@@ -28,6 +28,15 @@ def obtener_cita(id):
         print(e, flush=True)
         return abort(500)
 
+@bp.route('/eliminar/<int:id>')
+# @login_required
+def eliminar(id):
+    try:
+        _eliminar_cita((id,))
+        return jsonify(_obtener_cita(id)), 200
+    except Exception as e:
+        return abort(400)
+
 
 @bp.route('/nuevo', methods=('POST',))
 # @login_required
@@ -82,6 +91,11 @@ def _obtener_cita(id = None):
             from citas c 
             inner join doctores d on d.id_doctor = c.id_doctor
             inner join pacientes p on p.id_paciente = c.id_paciente
+<<<<<<< HEAD
+            where 
+                c.deshabilitado = 0
+=======
+>>>>>>> babea07acdf97c4c6b38e7288929abe31cd88fd2
             ''')
     
     for c in lista_citas:
@@ -103,4 +117,11 @@ def _actualizar_cita(doc):
     cita = insertar_o_actualizar("""update
         citas set id_paciente = %s, id_doctor = %s, fecha_cita = %s, hora_cita = %s where id_cita = %s;
     """, doc)
+    return cita
+
+
+def _eliminar_cita(id):
+    cita = insertar_o_actualizar("""update
+        citas set deshabilitado = 1 where id_cita = %s;
+    """, id)
     return cita
